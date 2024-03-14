@@ -55,34 +55,40 @@ namespace Calculator
     }
     internal class Program
     {
+
         private static void Main(string[] args)
         {
-            Console.WriteLine("Welcome to Calculator");
-            Console.WriteLine("Let's give the first argument!");
-            double a = 0;
-            double b = 0;
-            int operation = 0;
-            bool ifError = false;
-            try
+            while (true)
             {
-                a = double.Parse(Console.ReadLine());
-                Console.WriteLine("Choose the mathematical operation:");
-                Console.WriteLine("Write 1 for add \n Write 2 for subtract \n Write 3 for multiply \n Write 4 for divide");
-                operation = int.Parse(Console.ReadLine());
-                Console.WriteLine("Enter the second argument");
-                b = double.Parse(Console.ReadLine());
+                Console.WriteLine("Welcome to Calculator");
+                Console.WriteLine("Let's give the first argument!");
+                double a = 0;
+                double b = 0;
+                int operation = 0;
+                bool ifError = false;
+                try
+                {
+                    a = double.Parse(Console.ReadLine());
+                    Console.WriteLine("Choose the mathematical operation:");
+                    Console.WriteLine("Write 1 for add \n Write 2 for subtract \n Write 3 for multiply \n Write 4 for divide");
+                    operation = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Enter the second argument");
+                    b = double.Parse(Console.ReadLine());
                 
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Error: Invalid character!");
+                    ifError = true;
+                }
+                if (ifError == false)
+                {
+                    MathCalculations.CheckOperations(operation, a, b);
+                }
+                Console.WriteLine("Press Enter to start a new calculation.");
+                Console.ReadLine();
+                Console.Clear();
             }
-            catch (FormatException)
-            {
-                Console.WriteLine("Error: Invalid character!");
-                ifError = true;
-            }
-            if (ifError == false)
-            {
-                MathCalculations.CheckOperations(operation, a, b);
-            }
-            
 
         }
     }
