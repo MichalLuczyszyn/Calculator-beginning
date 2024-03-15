@@ -82,17 +82,14 @@ namespace Calculator
         {
             while (true)
             {
-                double a;
-                double b;
-                int operation = 0;
                 Console.WriteLine("Welcome to Calculator");
 
                 Console.WriteLine("Let's give the first argument!");
-                a = MathCalculations.CheckDoubleInput();
+                double a = MathCalculations.CheckDoubleInput();
 
                 Console.WriteLine("Choose the mathematical operation:");
                 Console.WriteLine("Write 1 for add \n Write 2 for subtract \n Write 3 for multiply \n Write 4 for divide");
-                operation = MathCalculations.CheckOperationInput();
+                int operation = MathCalculations.CheckOperationInput();
                 switch (operation)
                 {
                     case 1:
@@ -110,7 +107,7 @@ namespace Calculator
                 }
 
                 Console.WriteLine("Enter the second argument");
-                b = MathCalculations.CheckDoubleInput();
+                double b = MathCalculations.CheckDoubleInput();
                 
                 while ((operation == 4) && (b == 0))
                 {
