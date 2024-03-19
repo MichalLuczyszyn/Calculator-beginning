@@ -9,21 +9,27 @@ namespace Calculator
     {
         public static void Calculate(int operation, double a, double b)
         {
+            double solution = 0;
             switch (operation)
             {
                 case 1:
-                    Console.WriteLine("The result of the addition is: " + (a + b));
+                    solution = a + b;
+                    Console.WriteLine("The result of the addition is: " + (solution));
                     break;
                 case 2:
-                    Console.WriteLine("The result of the subtraction is: " + (a - b));
+                    solution = a - b;
+                    Console.WriteLine("The result of the subtraction is: " + (solution));
                     break;
                 case 3:
-                    Console.WriteLine("The result of the multiplication is: " + (a * b));
+                    solution = a * b;
+                    Console.WriteLine("The result of the multiplication is: " + (solution));
                     break;
                 case 4:
-                    Console.WriteLine("The result of the division is: " + (a / b));
+                    solution = a / b;
+                    Console.WriteLine("The result of the division is: " + (solution));
                     break;
             }
+            SaveSolutions(operation, a, b, solution);
         }
 
 
@@ -72,6 +78,13 @@ namespace Calculator
                 }
             }
         }
+
+        public static void SaveSolutions(int operation, double a, double b, double solution)
+        {
+            string output = Environment.NewLine + operation + " " + a + " " + b + " " + solution;
+            File.AppendAllText("C:\\Users\\micha\\source\\repos\\Calculator\\solutions.txt",output);
+        }
+
 
 
     }
