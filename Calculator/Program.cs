@@ -30,6 +30,16 @@ namespace Calculator
                     solution = a / b;
                     Console.WriteLine("The result of the division is: " + (solution));
                     break;
+                case 5:
+                    solution = 1;
+                    var i = 1;
+                    while ((a > 0) && (i <= a))
+                    {
+                        solution *= i;
+                        i++;
+                    }
+                    Console.WriteLine("The result of the factorial is: " + (solution));
+                    break;
             }
             SaveSolutions(operation, a, b, solution);
         }
@@ -64,14 +74,14 @@ namespace Calculator
                 {
                     result = int.Parse(input);
                     int i = 1;
-                    while (i <= 4)
+                    while (i <= 5)
                     {
                         if (result == i)
                         {
                             return result;
                         }
                         i++;
-                        if (i == 5)
+                        if (i == 6)
                         {
                             Console.WriteLine("Error: Wrong operation: " + result + ". Try again.");
                             input = Console.ReadLine();
@@ -79,6 +89,16 @@ namespace Calculator
                     }
                 }
             }
+        }
+
+        public static int CheckFactorialInput(double a)
+        {
+            while ((a != Convert.ToInt32(a)) || (a < 0))
+            {
+                Console.WriteLine("Error: Invalid character to factorial. Try again.");
+                a = CheckDoubleInput();
+            }
+            return Convert.ToInt32(a);
         }
 
         public static void SaveSolutions(int operation, double a, double b, double solution)
@@ -134,7 +154,7 @@ namespace Calculator
                 double a = MathCalculations.CheckDoubleInput();
 
                 Console.WriteLine("Choose the mathematical operation:");
-                Console.WriteLine("Write 1 for add \n Write 2 for subtract \n Write 3 for multiply \n Write 4 for divide");
+                Console.WriteLine("Write 1 for add \n Write 2 for subtract \n Write 3 for multiply \n Write 4 for divide \n Write 5 for factorial");
                 int operation = MathCalculations.CheckOperationInput();
                 switch (operation)
                 {
@@ -150,11 +170,21 @@ namespace Calculator
                     case 4:
                         Console.WriteLine("Chosen operation: divide");
                         break;
+                    case 5:
+                        Console.WriteLine("Chosen operation: factorial");
+                        break;
                 }
-
-                Console.WriteLine("Enter the second argument");
-                double b = MathCalculations.CheckDoubleInput();
-                
+                double b;
+                if (operation != 5)
+                {
+                    Console.WriteLine("Enter the second argument");
+                    b = MathCalculations.CheckDoubleInput();
+                }
+                else
+                {
+                    b = 0;
+                    a = MathCalculations.CheckFactorialInput(a);
+                }
                 while ((operation == 4) && (b == 0))
                 {
                     Console.WriteLine("Error: You cannot divide by 0. Give a different number.");
