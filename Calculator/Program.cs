@@ -16,19 +16,19 @@ namespace Calculator
             {
                 case 1:
                     solution = a + b;
-                    Console.WriteLine("The result of the addition is: " + (solution));
+                    Console.WriteLine("The result of the addition is: " + solution);
                     break;
                 case 2:
                     solution = a - b;
-                    Console.WriteLine("The result of the subtraction is: " + (solution));
+                    Console.WriteLine("The result of the subtraction is: " + solution);
                     break;
                 case 3:
                     solution = a * b;
-                    Console.WriteLine("The result of the multiplication is: " + (solution));
+                    Console.WriteLine("The result of the multiplication is: " + solution);
                     break;
                 case 4:
                     solution = a / b;
-                    Console.WriteLine("The result of the division is: " + (solution));
+                    Console.WriteLine("The result of the division is: " + solution);
                     break;
                 case 5:
                     solution = 1;
@@ -38,7 +38,11 @@ namespace Calculator
                         solution *= i;
                         i++;
                     }
-                    Console.WriteLine("The result of the factorial is: " + (solution));
+                    Console.WriteLine("The result of the factorial is: " + solution);
+                    break;
+                case 6:
+                    solution = a % b;
+                    Console.WriteLine("The result of modulo is: " + solution);
                     break;
             }
             SaveSolutions(operation, a, b, solution);
@@ -63,6 +67,7 @@ namespace Calculator
         {
             string input = Console.ReadLine();
             int result;
+            var operationsSum = 6;
             while (true)
             {
                 if (!int.TryParse(input, out result))
@@ -74,14 +79,14 @@ namespace Calculator
                 {
                     result = int.Parse(input);
                     int i = 1;
-                    while (i <= 5)
+                    while (i <= operationsSum)
                     {
                         if (result == i)
                         {
                             return result;
                         }
                         i++;
-                        if (i == 6)
+                        if (i == operationsSum + 1)
                         {
                             Console.WriteLine("Error: Wrong operation: " + result + ". Try again.");
                             input = Console.ReadLine();
@@ -154,7 +159,7 @@ namespace Calculator
                 double a = MathCalculations.CheckDoubleInput();
 
                 Console.WriteLine("Choose the mathematical operation:");
-                Console.WriteLine("Write 1 for add \n Write 2 for subtract \n Write 3 for multiply \n Write 4 for divide \n Write 5 for factorial");
+                Console.WriteLine("Write 1 for add \n Write 2 for subtract \n Write 3 for multiply \n Write 4 for divide \n Write 5 for factorial \n Write 6 for modulo");
                 int operation = MathCalculations.CheckOperationInput();
                 switch (operation)
                 {
@@ -173,6 +178,9 @@ namespace Calculator
                     case 5:
                         Console.WriteLine("Chosen operation: factorial");
                         break;
+                    case 6:
+                        Console.WriteLine("Chosen operation: modulo");
+                        break;
                 }
                 double b;
                 if (operation != 5)
@@ -185,9 +193,9 @@ namespace Calculator
                     b = 0;
                     a = MathCalculations.CheckFactorialInput(a);
                 }
-                while ((operation == 4) && (b == 0))
+                while (((operation == 4) || (operation == 6)) && (b == 0))
                 {
-                    Console.WriteLine("Error: You cannot divide by 0. Give a different number.");
+                    Console.WriteLine("Error: You cannot divide or modulo by 0. Give a different number.");
                     b = MathCalculations.CheckDoubleInput();
                 }
                 MathCalculations.CheckSolutions(operation, a, b);                
