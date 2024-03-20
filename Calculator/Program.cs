@@ -2,6 +2,8 @@
 using Calculator;
 using System.Net.NetworkInformation;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading.Channels;
 
 namespace Calculator
 {
@@ -81,10 +83,41 @@ namespace Calculator
 
         public static void SaveSolutions(int operation, double a, double b, double solution)
         {
-            string output = Environment.NewLine + operation + " " + a + " " + b + " " + solution;
+            string output = Environment.NewLine + operation + " " + a + " " + b + ":" + solution;
             File.AppendAllText("C:\\Users\\micha\\source\\repos\\Calculator\\solutions.txt",output);
+            Console.WriteLine("Solution saved.");
         }
 
+        
+        public static void CheckSolutions(int operation, double a, double b)
+        {
+            var output = operation + " " + a + " " + b;
+            var solutions = File.ReadAllLines("C:\\Users\\micha\\source\\repos\\Calculator\\solutions.txt");
+            var i = 1;
+            int indexOfMark;
+            var foundSolution = false;
+            while (i < solutions.Length)
+            {
+                indexOfMark = solutions[i].IndexOf(':');
+                if (indexOfMark != -1)
+                {
+                    var checkString = solutions[i].Substring(0 , indexOfMark);
+                    if (checkString == output)
+                    {
+                        var solutionString = solutions[i].Substring(indexOfMark + 1);
+                        Console.WriteLine("Found in file, solution: " + solutionString);
+                        foundSolution = true;
+                        break;
+                    }
+                }
+                i++;
+            }
+            if (foundSolution != true) 
+            {
+                Console.WriteLine("Not found in file, calculating...");
+                MathCalculations.Calculate(operation, a, b);
+            }
+        }
 
 
     }
@@ -127,7 +160,7 @@ namespace Calculator
                     Console.WriteLine("Error: You cannot divide by 0. Give a different number.");
                     b = MathCalculations.CheckDoubleInput();
                 }
-                MathCalculations.Calculate(operation, a, b);
+                MathCalculations.CheckSolutions(operation, a, b);                
 
                 Console.WriteLine("Press Enter to start a new calculation.");
                 Console.ReadLine();
