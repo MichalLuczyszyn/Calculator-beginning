@@ -1,9 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Calculator;
-using System.Net.NetworkInformation;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Channels;
+﻿
 
 namespace Calculator
 {
@@ -51,7 +46,7 @@ namespace Calculator
 
         public static double CheckDoubleInput ()
         {
-            string input = Console.ReadLine();
+            var input = Console.ReadLine();
             double result;
             while (!double.TryParse(input, out result))
             {
@@ -65,7 +60,7 @@ namespace Calculator
 
         public static int CheckOperationInput()
         {
-            string input = Console.ReadLine();
+            var input = Console.ReadLine();
             int result;
             var operationsSum = 6;
             while (true)
@@ -78,7 +73,7 @@ namespace Calculator
                 else
                 {
                     result = int.Parse(input);
-                    int i = 1;
+                    var i = 1;
                     while (i <= operationsSum)
                     {
                         if (result == i)
@@ -108,9 +103,9 @@ namespace Calculator
 
         public static void SaveSolutions(int operation, double a, double b, double solution)
         {
-            string output = Environment.NewLine + operation + " " + a + " " + b + ":" + solution;
-            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "solutions.txt");
-            File.AppendAllText(path, output);
+            var output = Environment.NewLine + operation + " " + a + " " + b + ":" + solution;
+            var file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "solutions.txt");
+            File.AppendAllText(file, output);
             Console.WriteLine("Solution saved.");
         }
 
@@ -119,10 +114,10 @@ namespace Calculator
         {
             var output = operation + " " + a + " " + b;
             var foundSolution = false;
-            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "solutions.txt");
-            if (File.Exists(path))
+            var file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "solutions.txt");
+            if (File.Exists(file))
             {
-                var solutions = File.ReadAllLines(path);
+                var solutions = File.ReadAllLines(file);
                 var i = 1;
                 int indexOfMark;
                 while (i < solutions.Length)
@@ -161,32 +156,17 @@ namespace Calculator
                 Console.WriteLine("Welcome to Calculator");
 
                 Console.WriteLine("Let's give the first argument!");
-                double a = MathCalculations.CheckDoubleInput();
+                var a = MathCalculations.CheckDoubleInput();
 
+                List<string> operationList = new() { "add", "substract", "multiply", "divide", "factorial", "modulo" };
                 Console.WriteLine("Choose the mathematical operation:");
-                Console.WriteLine("Write 1 for add \n Write 2 for subtract \n Write 3 for multiply \n Write 4 for divide \n Write 5 for factorial \n Write 6 for modulo");
-                int operation = MathCalculations.CheckOperationInput();
-                switch (operation)
+                for (var i = 1; i < operationList.Count+1; i++)
                 {
-                    case 1:
-                        Console.WriteLine("Chosen operation: add");
-                        break;
-                    case 2:
-                        Console.WriteLine("Chosen operation: substract");
-                        break;
-                    case 3:
-                        Console.WriteLine("Chosen operation: multiply");
-                        break;
-                    case 4:
-                        Console.WriteLine("Chosen operation: divide");
-                        break;
-                    case 5:
-                        Console.WriteLine("Chosen operation: factorial");
-                        break;
-                    case 6:
-                        Console.WriteLine("Chosen operation: modulo");
-                        break;
+                    Console.WriteLine("Write " + i + " for " + operationList[i - 1]);
                 }
+                var operation = MathCalculations.CheckOperationInput();
+                Console.WriteLine("Chosen operation: " + operationList[operation - 1]);
+
                 double b;
                 if (operation != 5)
                 {
@@ -198,6 +178,7 @@ namespace Calculator
                     b = 0;
                     a = MathCalculations.CheckFactorialInput(a);
                 }
+
                 while (((operation == 4) || (operation == 6)) && (b == 0))
                 {
                     Console.WriteLine("Error: You cannot divide or modulo by 0. Give a different number.");
