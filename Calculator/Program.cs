@@ -109,7 +109,8 @@ namespace Calculator
         public static void SaveSolutions(int operation, double a, double b, double solution)
         {
             string output = Environment.NewLine + operation + " " + a + " " + b + ":" + solution;
-            File.AppendAllText("C:\\Users\\micha\\source\\repos\\Calculator\\solutions.txt",output);
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "solutions.txt");
+            File.AppendAllText(path, output);
             Console.WriteLine("Solution saved.");
         }
 
@@ -117,31 +118,35 @@ namespace Calculator
         public static void CheckSolutions(int operation, double a, double b)
         {
             var output = operation + " " + a + " " + b;
-            var solutions = File.ReadAllLines("C:\\Users\\micha\\source\\repos\\Calculator\\solutions.txt");
-            var i = 1;
-            int indexOfMark;
             var foundSolution = false;
-            while (i < solutions.Length)
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "solutions.txt");
+            if (File.Exists(path))
             {
-                indexOfMark = solutions[i].IndexOf(':');
-                if (indexOfMark != -1)
+                var solutions = File.ReadAllLines(path);
+                var i = 1;
+                int indexOfMark;
+                while (i < solutions.Length)
                 {
-                    var checkString = solutions[i].Substring(0 , indexOfMark);
-                    if (checkString == output)
+                    indexOfMark = solutions[i].IndexOf(':');
+                    if (indexOfMark != -1)
                     {
-                        var solutionString = solutions[i].Substring(indexOfMark + 1);
-                        Console.WriteLine("Found in file, solution: " + solutionString);
-                        foundSolution = true;
-                        break;
+                        var checkString = solutions[i].Substring(0, indexOfMark);
+                        if (checkString == output)
+                        {
+                            var solutionString = solutions[i].Substring(indexOfMark + 1);
+                            Console.WriteLine("Found in file, solution: " + solutionString);
+                            foundSolution = true;
+                            break;
+                        }
                     }
+                    i++;
                 }
-                i++;
             }
-            if (foundSolution != true) 
+            if (foundSolution != true)
             {
                 Console.WriteLine("Not found in file, calculating...");
                 MathCalculations.Calculate(operation, a, b);
-            }
+            }    
         }
 
 
